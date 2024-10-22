@@ -1,6 +1,6 @@
 package com.git.gestor_academico.services;
 
-import com.git.gestor_academico.dtos.AlunoDto;
+import com.git.gestor_academico.dtos.request.AlunoRequestDTO;
 import com.git.gestor_academico.dtos.TccDto;
 import com.git.gestor_academico.mappers.AlunoMapper;
 import com.git.gestor_academico.mappers.OrientadorMapper;
@@ -53,9 +53,9 @@ public class TccService {
             tcc.setTitulo(tccDto.getTitulo());
         }
 
-        if(tccDto.getIntegrantes() != null) {
+        /*if(tccDto.getIntegrantes() != null) {
             tcc.setIntegrantes(getListAluno(tccDto.getIntegrantes()));
-        }
+        }*/
 
         if(tccDto.getOrientador() != null) {
             tcc.setOrientador(orientadorMapper.toDomain(tccDto.getOrientador()));
@@ -72,10 +72,10 @@ public class TccService {
         tccRepository.deleteById(tcc.getId());
     }
 
-    private List<Aluno> getListAluno(List<AlunoDto> alunosDtos) {
+    /*private List<Aluno> getListAluno(List<AlunoRequestDTO> alunosDtos) {
         List<Aluno> alunos = new ArrayList<>();
         alunosDtos.forEach(aluno -> alunos.add(alunoMapper.toDomain(aluno)));
         return alunos;
-    }
+    }*/
 
 }

@@ -1,9 +1,9 @@
 package com.git.gestor_academico.controllers;
 
-import com.git.gestor_academico.dtos.AlunoDto;
+import com.git.gestor_academico.dtos.request.AlunoRequestDTO;
+import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
 import com.git.gestor_academico.services.AlunoService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,24 +25,23 @@ public class AlunoController {
     private final AlunoService alunoService;
 
     @GetMapping
-    public ResponseEntity<List<AlunoDto>> getAll() {
+    public ResponseEntity<List<AlunoResponseDTO>> getAll() {
         return ResponseEntity.ok(alunoService.listarTodos());
     }
 
     @GetMapping("/{registro}")
-    public ResponseEntity<AlunoDto> procurarPorRegistro(@PathVariable Long registro) {
+    public ResponseEntity<AlunoResponseDTO> procurarPorRegistro(@PathVariable Long registro) {
         return new ResponseEntity<>(alunoService.buscarPorRegistro(registro), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<AlunoDto> save(@RequestBody AlunoDto aluno) {
+    public ResponseEntity<AlunoResponseDTO> save(@RequestBody AlunoRequestDTO aluno) {
         return new ResponseEntity<>(alunoService.salvar(aluno), HttpStatus.CREATED);
     }
 
     @PutMapping("/{registro}")
-    public ResponseEntity<AlunoDto> atualizar(@PathVariable Long registro,
-                                                @RequestBody AlunoDto aluno) {
-
+    public ResponseEntity<AlunoResponseDTO> atualizar(@PathVariable Long registro,
+                                                     @RequestBody AlunoRequestDTO aluno) {
         return new ResponseEntity<>(alunoService.atualizar(registro, aluno), HttpStatus.OK);
     }
 

@@ -9,12 +9,16 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,6 +41,10 @@ public class Orientador {
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
+    @JoinTable(name = "tb_orientador_disponibilidades")
     private Set<Disponibilidades> disponibilidades;
+
+    @OneToMany(mappedBy = "orientador")
+    private List<Tcc> tccs;
 
 }

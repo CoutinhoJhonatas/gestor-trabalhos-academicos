@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -16,24 +14,19 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_tcc")
+@Table(name = "tb_curso")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Tcc {
+public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String titulo;
-    private String linkDocs;
+    private String nome;
 
-    @OneToMany(mappedBy = "tcc")
-    private List<Aluno> integrantes;
-
-    @ManyToOne
-    @JoinColumn(name = "orientador_id")
-    private Orientador orientador;
+    @OneToMany(mappedBy = "curso")
+    private List<Aluno> alunos;
 
 }

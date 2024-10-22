@@ -1,5 +1,6 @@
 package com.git.gestor_academico.dtos;
 
+import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class TccDto {
 
     private Long id;
     private String titulo;
-    private List<AlunoDto> integrantes;
+    private List<AlunoResponseDTO> integrantes;
     private OrientadorDto orientador;
 
 }

@@ -1,4 +1,4 @@
-package com.git.gestor_academico.dtos;
+package com.git.gestor_academico.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AlunoDto {
+public class AlunoResponseDTO {
 
     private Long registroAluno;
     private String nome;
     private String turma;
-    private String curso;
     private String telefone;
+    //private String role;
+    private CursoResponseDTO curso;
 
 }

@@ -1,13 +1,20 @@
 package com.git.gestor_academico.services;
 
-import com.git.gestor_academico.dtos.AlunoDto;
+import com.git.gestor_academico.dtos.request.AlunoRequestDTO;
+import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
 import com.git.gestor_academico.mappers.AlunoMapper;
 import com.git.gestor_academico.models.Aluno;
+import com.git.gestor_academico.models.Curso;
 import com.git.gestor_academico.repositorys.AlunoRepository;
+import com.git.gestor_academico.repositorys.CursoRepository;
+import com.git.gestor_academico.services.exceptions.DatabaseException;
+import com.git.gestor_academico.services.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.module.ResolutionException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,55 +23,73 @@ import java.util.List;
 public class AlunoService {
 
     private final AlunoRepository alunoRepository;
-
+    private final CursoRepository cursoRepository;
     private final AlunoMapper alunoMapper;
 
-    public List<AlunoDto> listarTodos() {
+    private static final String ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
+
+    @Transactional(readOnly = true)
+    public List<AlunoResponseDTO> listarTodos() {
         List<Aluno> alunos = alunoRepository.findAll();
-        List<AlunoDto> alunoDtos = new ArrayList<>();
-        alunos.forEach(aluno -> alunoDtos.add(alunoMapper.toDto(aluno)));
-        return alunoDtos;
+        List<AlunoResponseDTO> alunoResponseDTOS = new ArrayList<>();
+        alunos.forEach(aluno -> alunoResponseDTOS.add(alunoMapper.toResponseDto(aluno)));
+        return alunoResponseDTOS;
     }
 
-    public AlunoDto buscarPorRegistro(Long registro) {
+    @Transactional(readOnly = true)
+    public AlunoResponseDTO buscarPorRegistro(Long registro) {
         Aluno aluno = alunoRepository.findById(registro)
-                .orElseThrow(() -> new ResolutionException("Aluno não encontrado"));
-        return alunoMapper.toDto(aluno);
+                .orElseThrow(() -> new ResourceNotFoundException(ALUNO_NAO_ENCONTRADO));
+        return alunoMapper.toResponseDto(aluno);
     }
 
-    public AlunoDto salvar(AlunoDto alunoDto) {
-        Aluno aluno = alunoRepository.save(alunoMapper.toDomain(alunoDto));
-        return alunoMapper.toDto(aluno);
+    @Transactional
+    public AlunoResponseDTO salvar(AlunoRequestDTO alunoRequestDTO) {
+        Curso curso = cursoRepository.findById(alunoRequestDTO.getCursoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Curso com o id " + alunoRequestDTO.getCursoId() + " não encontrado"));
+        Aluno aluno = alunoMapper.toDomain(alunoRequestDTO);
+        aluno.setCurso(curso);
+        //aluno.setRole("ALUNO");
+        aluno = alunoRepository.save(aluno);
+        return alunoMapper.toResponseDto(aluno);
     }
 
-    public AlunoDto atualizar(Long registro, AlunoDto alunoDto) {
+    @Transactional
+    public AlunoResponseDTO atualizar(Long registro, AlunoRequestDTO alunoRequestDTO) {
         Aluno aluno = alunoRepository.findById(registro)
-                .orElseThrow(() -> new ResolutionException("Aluno não encontrado") );
+                .orElseThrow(() -> new ResourceNotFoundException(ALUNO_NAO_ENCONTRADO));
 
-        if(alunoDto.getNome() != null) {
-            aluno.setNome(alunoDto.getNome());
+        if(alunoRequestDTO.getNome() != null) {
+            aluno.setNome(alunoRequestDTO.getNome());
         }
 
-        if(alunoDto.getTurma() != null) {
-            aluno.setTurma(alunoDto.getTurma());
+        if(alunoRequestDTO.getTurma() != null) {
+            aluno.setTurma(alunoRequestDTO.getTurma());
         }
 
-        if(alunoDto.getCurso() != null) {
-            aluno.setCurso(alunoDto.getCurso());
+        if(alunoRequestDTO.getCursoId() != null) {
+            Curso curso = cursoRepository.findById(alunoRequestDTO.getCursoId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Curso com o id " + alunoRequestDTO.getCursoId() + " não encontrado"));
+            aluno.setCurso(curso);
         }
 
-        if(alunoDto.getTelefone() != null) {
-            aluno.setTelefone(alunoDto.getTelefone());
+        if(alunoRequestDTO.getTelefone() != null) {
+            aluno.setTelefone(alunoRequestDTO.getTelefone());
         }
 
-        alunoRepository.save(aluno);
-
-        return alunoMapper.toDto(aluno);
+        aluno = alunoRepository.save(aluno);
+        return alunoMapper.toResponseDto(aluno);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void deletar(Long registro) {
-        Aluno aluno = alunoRepository.findById(registro)
-                .orElseThrow(() -> new ResolutionException("Aluno não encontrado"));
-        alunoRepository.deleteById(aluno.getRegistroAluno());
+        if(!alunoRepository.existsById(registro)) {
+            throw new ResourceNotFoundException(ALUNO_NAO_ENCONTRADO);
+        }
+        try {
+            alunoRepository.deleteById(registro);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
     }
 }
