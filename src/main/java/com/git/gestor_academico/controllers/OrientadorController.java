@@ -2,6 +2,7 @@ package com.git.gestor_academico.controllers;
 
 import com.git.gestor_academico.dtos.OrientadorDto;
 import com.git.gestor_academico.services.OrientadorService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +35,13 @@ public class OrientadorController {
     }
 
     @PostMapping
-    public ResponseEntity<OrientadorDto> save(@RequestBody OrientadorDto orientador) {
+    public ResponseEntity<OrientadorDto> save(@Valid @RequestBody OrientadorDto orientador) {
         return new ResponseEntity<>(orientadorService.salvar(orientador), HttpStatus.CREATED);
     }
 
     @PutMapping("/{matricula}")
     public ResponseEntity<OrientadorDto> atualizar(@PathVariable Long matricula,
-                                                @RequestBody OrientadorDto orientador) {
-
+                                                   @Valid @RequestBody OrientadorDto orientador) {
         return new ResponseEntity<>(orientadorService.atualizar(matricula, orientador), HttpStatus.OK);
     }
 

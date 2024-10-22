@@ -30,7 +30,6 @@ import java.util.Set;
 public class Orientador {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long matricula;
     private String nome;
     private String telefone;

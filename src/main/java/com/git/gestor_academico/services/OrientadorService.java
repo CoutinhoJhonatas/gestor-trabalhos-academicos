@@ -6,10 +6,14 @@ import com.git.gestor_academico.models.Orientador;
 import com.git.gestor_academico.models.enums.Disponibilidades;
 import com.git.gestor_academico.models.enums.Titulacao;
 import com.git.gestor_academico.repositorys.OrientadorRepository;
+import com.git.gestor_academico.services.exceptions.DatabaseException;
+import com.git.gestor_academico.services.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.module.ResolutionException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,9 +24,11 @@ import java.util.Set;
 public class OrientadorService {
 
     private final OrientadorRepository orientadorRepository;
-
     private final OrientadorMapper orientadorMapper;
 
+    private static final String ORIENTADOR_NAO_ENCONTRADO = "Orientador não encontrado";
+
+    @Transactional(readOnly = true)
     public List<OrientadorDto> listarTodos() {
         List<Orientador> orientadores = orientadorRepository.findAll();
         List<OrientadorDto> orientadoresDtos = new ArrayList<>();
@@ -30,20 +36,23 @@ public class OrientadorService {
         return orientadoresDtos;
     }
 
+    @Transactional(readOnly = true)
     public OrientadorDto buscarPorMatricula(Long matricula) {
         Orientador orientador = orientadorRepository.findById(matricula)
-                .orElseThrow(() -> new ResolutionException("Orientador não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException(ORIENTADOR_NAO_ENCONTRADO));
         return orientadorMapper.toDto(orientador);
     }
 
+    @Transactional
     public OrientadorDto salvar(OrientadorDto orientadorDto) {
         Orientador orientador = orientadorRepository.save(orientadorMapper.toDomain(orientadorDto));
         return orientadorMapper.toDto(orientador);
     }
 
+    @Transactional
     public OrientadorDto atualizar(Long matricula, OrientadorDto orientadorDto) {
         Orientador orientador = orientadorRepository.findById(matricula)
-                .orElseThrow(() -> new ResolutionException("Orientador não encontrado") );
+                .orElseThrow(() -> new ResourceNotFoundException(ORIENTADOR_NAO_ENCONTRADO));
 
         if(orientadorDto.getNome() != null) {
             orientador.setNome(orientadorDto.getNome());
@@ -66,14 +75,19 @@ public class OrientadorService {
         }
 
         orientadorRepository.save(orientador);
-
         return orientadorMapper.toDto(orientador);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void deletar(Long matricula) {
-        Orientador orientador = orientadorRepository.findById(matricula)
-                .orElseThrow(() -> new ResolutionException("Orientador não encontrado"));
-        orientadorRepository.deleteById(orientador.getMatricula());
+        if(!orientadorRepository.existsById(matricula)) {
+            throw new ResourceNotFoundException(ORIENTADOR_NAO_ENCONTRADO);
+        }
+        try {
+            orientadorRepository.deleteById(matricula);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
     }
 
     private Set<Disponibilidades> getListDisponibilidades(Set<String> disponibilidades) {
