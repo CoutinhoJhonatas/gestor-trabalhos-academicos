@@ -3,6 +3,7 @@ package com.git.gestor_academico.controllers;
 import com.git.gestor_academico.dtos.request.AlunoRequestDTO;
 import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
 import com.git.gestor_academico.services.AlunoService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +36,13 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<AlunoResponseDTO> save(@RequestBody AlunoRequestDTO aluno) {
+    public ResponseEntity<AlunoResponseDTO> save(@Valid @RequestBody AlunoRequestDTO aluno) {
         return new ResponseEntity<>(alunoService.salvar(aluno), HttpStatus.CREATED);
     }
 
     @PutMapping("/{registro}")
     public ResponseEntity<AlunoResponseDTO> atualizar(@PathVariable Long registro,
-                                                     @RequestBody AlunoRequestDTO aluno) {
+                                                      @Valid @RequestBody AlunoRequestDTO aluno) {
         return new ResponseEntity<>(alunoService.atualizar(registro, aluno), HttpStatus.OK);
     }
 
