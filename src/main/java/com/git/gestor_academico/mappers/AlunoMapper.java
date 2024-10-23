@@ -9,8 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AlunoMapper {
 
-    AlunoRequestDTO toRequestDto(Aluno aluno);
-
     @Mapping(target = "curso.nome", source = "curso.nome")
     AlunoResponseDTO toResponseDto(Aluno aluno);
     Aluno toDomain(AlunoRequestDTO dto);

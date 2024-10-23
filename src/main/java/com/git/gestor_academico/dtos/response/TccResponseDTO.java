@@ -1,6 +1,6 @@
-package com.git.gestor_academico.dtos;
+package com.git.gestor_academico.dtos.response;
 
-import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
+import com.git.gestor_academico.dtos.OrientadorDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TccDto {
+public class TccResponseDTO {
 
     private Long id;
     private String titulo;
-    private List<AlunoResponseDTO> integrantes;
+    private String linkDocs;
+    private String resumoProposta;
     private OrientadorDto orientador;
+    private List<AlunoResponseDTO> integrantes;
 
 }

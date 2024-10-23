@@ -28,12 +28,13 @@ public class Tcc {
     private Long id;
     private String titulo;
     private String linkDocs;
-
-    @OneToMany(mappedBy = "tcc")
-    private List<Aluno> integrantes;
+    private String resumoProposta;
 
     @ManyToOne
     @JoinColumn(name = "orientador_id")
     private Orientador orientador;
+
+    @OneToMany(mappedBy = "tcc")
+    private List<Aluno> integrantes;
 
 }

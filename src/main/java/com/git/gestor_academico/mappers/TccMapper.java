@@ -1,6 +1,7 @@
 package com.git.gestor_academico.mappers;
 
-import com.git.gestor_academico.dtos.TccDto;
+import com.git.gestor_academico.dtos.request.TccRequestDTO;
+import com.git.gestor_academico.dtos.response.TccResponseDTO;
 import com.git.gestor_academico.models.Tcc;
 import org.mapstruct.Mapper;
 
@@ -8,9 +9,8 @@ import org.mapstruct.Mapper;
 public interface TccMapper {
 
 
-    TccDto toDto(Tcc tcc);
+    TccResponseDTO toResponseDTO(Tcc tcc);
 
-
-    Tcc toDomain(TccDto dto);
+    Tcc toDomain(TccRequestDTO dto);
 
 }

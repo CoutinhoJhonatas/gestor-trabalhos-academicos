@@ -1,7 +1,9 @@
 package com.git.gestor_academico.controllers;
 
-import com.git.gestor_academico.dtos.TccDto;
+import com.git.gestor_academico.dtos.request.TccRequestDTO;
+import com.git.gestor_academico.dtos.response.TccResponseDTO;
 import com.git.gestor_academico.services.TccService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,26 +26,26 @@ public class TccController {
     private final TccService tccService;
 
     @GetMapping
-    public ResponseEntity<List<TccDto>> getAll() {
+    public ResponseEntity<List<TccResponseDTO>> getAll() {
         return ResponseEntity.ok(tccService.listarTodos());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TccDto> procurarPorRegistro(@PathVariable Long id) {
+    public ResponseEntity<TccResponseDTO> procurarPorRegistro(@PathVariable Long id) {
         return new ResponseEntity<>(tccService.buscarPorId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<TccDto> save(@RequestBody TccDto tcc) {
+    public ResponseEntity<TccResponseDTO> save(@Valid @RequestBody TccRequestDTO tcc) {
         return new ResponseEntity<>(tccService.salvar(tcc), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TccDto> atualizar(@PathVariable Long id,
-                                              @RequestBody TccDto tcc) {
+    /*@PutMapping("/{id}")
+    public ResponseEntity<TccResponseDTO> atualizar(@PathVariable Long id,
+                                                    @RequestBody TccRequestDTO tcc) {
 
         return new ResponseEntity<>(tccService.atualizar(id, tcc), HttpStatus.OK);
-    }
+    }*/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {

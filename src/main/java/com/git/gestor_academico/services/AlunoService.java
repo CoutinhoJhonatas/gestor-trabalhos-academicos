@@ -5,6 +5,7 @@ import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
 import com.git.gestor_academico.mappers.AlunoMapper;
 import com.git.gestor_academico.models.Aluno;
 import com.git.gestor_academico.models.Curso;
+import com.git.gestor_academico.models.Tcc;
 import com.git.gestor_academico.repositorys.AlunoRepository;
 import com.git.gestor_academico.repositorys.CursoRepository;
 import com.git.gestor_academico.services.exceptions.DatabaseException;
@@ -91,5 +92,20 @@ public class AlunoService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Falha de integridade referencial");
         }
+    }
+
+    @Transactional
+    public List<AlunoResponseDTO> vincularTccAluno(Tcc tcc, List<Long> alunosRAs) {
+        List<AlunoResponseDTO> alunoResponseDTOS = new ArrayList<>();
+
+        alunosRAs.forEach(ra -> {
+            Aluno aluno = alunoRepository.findById(ra)
+                    .orElseThrow(() -> new ResourceNotFoundException(ALUNO_NAO_ENCONTRADO));
+            aluno.setTcc(tcc);
+            aluno = alunoRepository.save(aluno);
+            alunoResponseDTOS.add(alunoMapper.toResponseDto(aluno));
+        });
+
+        return alunoResponseDTOS;
     }
 }
