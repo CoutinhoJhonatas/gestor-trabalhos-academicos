@@ -19,6 +19,6 @@ public class TccResponseDTO {
     private String linkDocs;
     private String resumoProposta;
     private OrientadorDto orientador;
-    private List<AlunoResponseDTO> integrantes;
+    private List<AlunoTccResponseDTO> integrantes;
 
 }

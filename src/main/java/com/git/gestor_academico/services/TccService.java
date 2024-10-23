@@ -1,15 +1,16 @@
 package com.git.gestor_academico.services;
 
-import com.git.gestor_academico.dtos.request.TccRequestDTO;
-import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
-import com.git.gestor_academico.dtos.response.TccResponseDTO;
 import com.git.gestor_academico.dtos.request.AlunoRequestDTO;
+import com.git.gestor_academico.dtos.request.TccRequestDTO;
+import com.git.gestor_academico.dtos.response.AlunoTccResponseDTO;
+import com.git.gestor_academico.dtos.response.TccResponseDTO;
 import com.git.gestor_academico.mappers.AlunoMapper;
 import com.git.gestor_academico.mappers.OrientadorMapper;
 import com.git.gestor_academico.mappers.TccMapper;
 import com.git.gestor_academico.models.Aluno;
 import com.git.gestor_academico.models.Orientador;
 import com.git.gestor_academico.models.Tcc;
+import com.git.gestor_academico.repositorys.AlunoRepository;
 import com.git.gestor_academico.repositorys.OrientadorRepository;
 import com.git.gestor_academico.repositorys.TccRepository;
 import com.git.gestor_academico.services.exceptions.DatabaseException;
@@ -29,12 +30,11 @@ public class TccService {
 
     private final TccRepository tccRepository;
     private final OrientadorRepository orientadorRepository;
+    private final AlunoRepository alunoRepository;
     private final TccMapper tccMapper;
-    private final AlunoMapper alunoMapper;
-    private final OrientadorMapper orientadorMapper;
     private final AlunoService alunoService;
 
-    private static final String TCC_NAO_ENCONTRADO = "TCC com o id %d não encontrado";
+    private static final String TCC_NAO_ENCONTRADO = "TCC com o ID %d não encontrado";
 
     @Transactional(readOnly = true)
     public List<TccResponseDTO> listarTodos() {
@@ -53,41 +53,32 @@ public class TccService {
 
     @Transactional
     public TccResponseDTO salvar(TccRequestDTO tccRequestDTO) {
-        Orientador orientador = orientadorRepository.findById(tccRequestDTO.getOrientadorMatricula())
-                .orElseThrow(() -> new ResourceNotFoundException("Orientador com a matricula " +
-                        tccRequestDTO.getOrientadorMatricula() + " não encontrado"));
+        Orientador orientador = buscarOrientador(tccRequestDTO.getOrientadorMatricula());
 
         Tcc tcc = tccMapper.toDomain(tccRequestDTO);
         tcc.setOrientador(orientador);
         tcc = tccRepository.save(tcc);
 
-        List<AlunoResponseDTO> alunoResponseDTOS = alunoService.vincularTccAluno(tcc, tccRequestDTO.getIntegrantesRA());
+        List<AlunoTccResponseDTO> alunoTccResponseDTOS = alunoService.vincularTccAluno(tcc, tccRequestDTO.getIntegrantesRA());
         TccResponseDTO tccResponseDTO = tccMapper.toResponseDTO(tcc);
-        tccResponseDTO.setIntegrantes(alunoResponseDTOS);
+        tccResponseDTO.setIntegrantes(alunoTccResponseDTOS);
         return tccResponseDTO;
     }
 
-    /*@Transactional
-    public TccResponseDTO atualizar(Long id, TccRequestDTO tccResponseDTO) {
+    @Transactional
+    public TccResponseDTO atualizar(Long id, TccRequestDTO tccRequestDTO) {
         Tcc tcc = tccRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(TCC_NAO_ENCONTRADO, id)));
 
-        if(tccResponseDTO.getTitulo() != null) {
-            tcc.setTitulo(tccResponseDTO.getTitulo());
-        }
+        tcc.setTitulo(tccRequestDTO.getTitulo());
+        tcc.setLinkDocs(tccRequestDTO.getLinkDocs());
+        tcc.setResumoProposta(tccRequestDTO.getResumoProposta());
+        tcc.setOrientador(buscarOrientador(tccRequestDTO.getOrientadorMatricula()));
+        tcc.setIntegrantes(getListAluno(tccRequestDTO.getIntegrantesRA()));
 
-        if(tccResponseDTO.getIntegrantes() != null) {
-            tcc.setIntegrantes(getListAluno(tccResponseDTO.getIntegrantes()));
-        }
-
-        if(tccResponseDTO.getOrientador() != null) {
-            tcc.setOrientador(orientadorMapper.toDomain(tccResponseDTO.getOrientador()));
-        }
-
-        tccRepository.save(tcc);
-
+        tcc = tccRepository.save(tcc);
         return tccMapper.toResponseDTO(tcc);
-    }*/
+    }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deletar(Long id) {
@@ -101,10 +92,16 @@ public class TccService {
         }
     }
 
-    private List<Aluno> getListAluno(List<AlunoRequestDTO> alunosDtos) {
+    private List<Aluno> getListAluno(List<Long> alunosRAs) {
         List<Aluno> alunos = new ArrayList<>();
-        alunosDtos.forEach(aluno -> alunos.add(alunoMapper.toDomain(aluno)));
+        alunosRAs.forEach(ra -> alunos.add(alunoRepository.findById(ra)
+                .orElseThrow(() -> new ResourceNotFoundException("Aluno com o RA " + ra + " não encontrado"))));
         return alunos;
+    }
+
+    private Orientador buscarOrientador(Long matricula) {
+        return orientadorRepository.findById(matricula)
+                .orElseThrow(() -> new ResourceNotFoundException("Orientador com a matricula " + matricula + " não encontrado"));
     }
 
 }

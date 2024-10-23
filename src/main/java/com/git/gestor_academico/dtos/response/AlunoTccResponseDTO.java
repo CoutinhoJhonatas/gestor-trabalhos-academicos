@@ -9,14 +9,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AlunoResponseDTO {
+public class AlunoTccResponseDTO {
 
     private Long registroAluno;
     private String nome;
     private String turma;
     private String telefone;
-    //private String role;
     private CursoResponseDTO curso;
-    private Long tccId;
 
 }

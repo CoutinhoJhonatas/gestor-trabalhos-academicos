@@ -40,12 +40,11 @@ public class TccController {
         return new ResponseEntity<>(tccService.salvar(tcc), HttpStatus.CREATED);
     }
 
-    /*@PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TccResponseDTO> atualizar(@PathVariable Long id,
-                                                    @RequestBody TccRequestDTO tcc) {
-
+                                                    @Valid @RequestBody TccRequestDTO tcc) {
         return new ResponseEntity<>(tccService.atualizar(id, tcc), HttpStatus.OK);
-    }*/
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
