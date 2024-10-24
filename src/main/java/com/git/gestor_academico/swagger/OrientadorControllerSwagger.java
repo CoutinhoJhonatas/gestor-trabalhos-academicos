@@ -80,7 +80,7 @@ public interface OrientadorControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<OrientadorDto> save(@Parameter(description = "Informações do orientador") OrientadorDto orientador);
+    ResponseEntity<OrientadorDto> save(@Parameter(description = "Dados do orientador") OrientadorDto orientador);
 
     @Operation(summary = "Atualizar orientador")
     @ApiResponse(responseCode = "200", description = "Orientador atualizado com sucesso",
@@ -108,13 +108,10 @@ public interface OrientadorControllerSwagger {
                     schema = @Schema(implementation = CustomError.class))
             })
     ResponseEntity<OrientadorDto> atualizar(@Parameter(description = "Matrícula do orientador") Long matricula,
-                                            @Parameter(description = "Informações atualizadas do orientador") OrientadorDto orientador);
+                                            @Parameter(description = "Dados atualizados do orientador") OrientadorDto orientador);
 
     @Operation(summary = "Deletar orientador")
-    @ApiResponse(responseCode = "204", description = "Orientador deletado com sucesso",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = AlunoResponseDTO.class))
-            })
+    @ApiResponse(responseCode = "204", description = "Orientador deletado com sucesso")
     @ApiResponse(responseCode = "401", description = "Usuário não autenticado",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))

@@ -1,8 +1,8 @@
 package com.git.gestor_academico.swagger;
 
 import com.git.gestor_academico.dtos.exceptions.CustomError;
-import com.git.gestor_academico.dtos.request.TccRequestDTO;
-import com.git.gestor_academico.dtos.response.TccResponseDTO;
+import com.git.gestor_academico.dtos.request.CoordenadorRequestDTO;
+import com.git.gestor_academico.dtos.response.CoordenadorResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,13 +14,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@Tag(name = "TCCs")
-public interface TccControllerSwagger {
+@Tag(name = "Coordenadores")
+public interface CoordenadorControllerSwagger {
 
-    @Operation(summary = "Buscar todos os TCCs")
-    @ApiResponse(responseCode = "200", description = "TCCs retornados com sucesso",
+    @Operation(summary = "Buscar todos os coordenadores")
+    @ApiResponse(responseCode = "200", description = "Coordenadores retornados com sucesso",
             content = {@Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = TccResponseDTO.class)))
+                    array = @ArraySchema(schema = @Schema(implementation = CoordenadorResponseDTO.class)))
             })
     @ApiResponse(responseCode = "401", description = "Usuário não autenticado",
             content = {@Content(mediaType = "application/json",
@@ -34,16 +34,12 @@ public interface TccControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<List<TccResponseDTO>> getAll();
+    ResponseEntity<List<CoordenadorResponseDTO>> buscarTodos();
 
-    @Operation(summary = "Buscar TCC pela matrícula")
-    @ApiResponse(responseCode = "200", description = "TCC retornado com sucesso",
+    @Operation(summary = "Buscar coordenador pela matrícula")
+    @ApiResponse(responseCode = "200", description = "Coordenador retornado com sucesso",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = TccResponseDTO.class))
-            })
-    @ApiResponse(responseCode = "404", description = "TCC com o ID especificado não foi encontrado",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = CustomError.class))
+                    schema = @Schema(implementation = CoordenadorResponseDTO.class))
             })
     @ApiResponse(responseCode = "401", description = "Usuário não autenticado",
             content = {@Content(mediaType = "application/json",
@@ -53,16 +49,20 @@ public interface TccControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
+    @ApiResponse(responseCode = "404", description = "Coordenador com a matrícula especificada não foi encontrado",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = CustomError.class))
+            })
     @ApiResponse(responseCode = "500", description = "Erro inesperado no servidor",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<TccResponseDTO> procurarPorRegistro(@Parameter(description = "ID do TCC") Long id);
+    ResponseEntity<CoordenadorResponseDTO> procurarPorMatricula(@Parameter(description = "Matrícula do coordenador") Long matricula);
 
-    @Operation(summary = "Salvar TCC")
-    @ApiResponse(responseCode = "201", description = "TCC salvo com sucesso",
+    @Operation(summary = "Salvar coordenador")
+    @ApiResponse(responseCode = "201", description = "Coordenador salvo com sucesso",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = TccResponseDTO.class))
+                    schema = @Schema(implementation = CoordenadorResponseDTO.class))
             })
     @ApiResponse(responseCode = "400", description = "Parâmetros inválidos",
             content = {@Content(mediaType = "application/json",
@@ -76,20 +76,16 @@ public interface TccControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    @ApiResponse(responseCode = "404", description = "Orientador/integrantes com a matrícula/RAs especificado não foi encontrado",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = CustomError.class))
-            })
     @ApiResponse(responseCode = "500", description = "Erro inesperado no servidor",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<TccResponseDTO> save(@Parameter(description = "Informações do TCC") TccRequestDTO tcc);
+    ResponseEntity<CoordenadorResponseDTO> save(@Parameter(description = "Dados do coordenador") CoordenadorRequestDTO coordenador);
 
-    @Operation(summary = "Atualizar TCC")
-    @ApiResponse(responseCode = "200", description = "TCC atualizado com sucesso",
+    @Operation(summary = "Atualizar coordenador")
+    @ApiResponse(responseCode = "200", description = "Coordenador atualizado com sucesso",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = TccResponseDTO.class))
+                    schema = @Schema(implementation = CoordenadorResponseDTO.class))
             })
     @ApiResponse(responseCode = "400", description = "Parâmetros inválidos",
             content = {@Content(mediaType = "application/json",
@@ -103,7 +99,7 @@ public interface TccControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    @ApiResponse(responseCode = "404", description = "Orientador/integrantes com a matrícula/RAs especificado não foi encontrado",
+    @ApiResponse(responseCode = "404", description = "O coordenador com a matrícula especificada não foi encontrado",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
@@ -111,11 +107,11 @@ public interface TccControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<TccResponseDTO> atualizar(@Parameter(description = "ID do TCC") Long id,
-                                             @Parameter(description = "Informações atualizadas do TCC") TccRequestDTO tcc);
+    ResponseEntity<CoordenadorResponseDTO> atualizar(@Parameter(description = "Matrícula do coordenador") Long matricula,
+                                                     @Parameter(description = "Dados do coordenador") CoordenadorRequestDTO coordenador);
 
-    @Operation(summary = "Deletar TCC")
-    @ApiResponse(responseCode = "204", description = "TCC deletado com sucesso")
+    @Operation(summary = "Desativar coordenador")
+    @ApiResponse(responseCode = "204", description = "Coordenador desativado com sucesso")
     @ApiResponse(responseCode = "401", description = "Usuário não autenticado",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
@@ -124,7 +120,7 @@ public interface TccControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    @ApiResponse(responseCode = "404", description = "O tcc com o ID especificado não foi encontrado",
+    @ApiResponse(responseCode = "404", description = "O coordenador com a matrícula especificada não foi encontrado",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
@@ -132,6 +128,5 @@ public interface TccControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<Void> deletar(@Parameter(description = "ID do TCC") Long id);
-
+    ResponseEntity<Void> desativar(@Parameter(description = "Matrícula do coordenador") Long matricula);
 }

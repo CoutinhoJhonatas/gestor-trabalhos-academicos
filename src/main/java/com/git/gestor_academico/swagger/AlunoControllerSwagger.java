@@ -84,7 +84,7 @@ public interface AlunoControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<AlunoResponseDTO> save(@Parameter(description = "Informações do aluno") AlunoRequestDTO aluno);
+    ResponseEntity<AlunoResponseDTO> save(@Parameter(description = "Dados do aluno") AlunoRequestDTO aluno);
 
     @Operation(summary = "Atualizar aluno")
     @ApiResponse(responseCode = "200", description = "Aluno atualizado com sucesso",
@@ -112,13 +112,10 @@ public interface AlunoControllerSwagger {
                     schema = @Schema(implementation = CustomError.class))
             })
     ResponseEntity<AlunoResponseDTO> atualizar(@Parameter(description = "RA do aluno") Long registro,
-                                               @Parameter(description = "Informações atualizadas do aluno") AlunoRequestDTO aluno);
+                                               @Parameter(description = "Dados atualizados do aluno") AlunoRequestDTO aluno);
 
     @Operation(summary = "Deletar aluno")
-    @ApiResponse(responseCode = "204", description = "Aluno deletado com sucesso",
-            content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = AlunoResponseDTO.class))
-            })
+    @ApiResponse(responseCode = "204", description = "Aluno deletado com sucesso")
     @ApiResponse(responseCode = "401", description = "Usuário não autenticado",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))

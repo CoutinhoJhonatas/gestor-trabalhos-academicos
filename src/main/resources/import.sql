@@ -15,3 +15,5 @@ INSERT INTO tb_orientador(matricula, nome, telefone, area_conhecimento, titulaca
 INSERT INTO tb_orientador_disponibilidades(orientador_matricula, disponibilidades) VALUES (23456789, 'ORIENTADOR');
 INSERT INTO tb_orientador_disponibilidades(orientador_matricula, disponibilidades) VALUES (12345699, 'ORIENTADOR');
 INSERT INTO tb_orientador_disponibilidades(orientador_matricula, disponibilidades) VALUES (12345699, 'AVALIADOR_DE_BANCA');
+
+INSERT INTO tb_coordenador(matricula, nome, telefone, role, ativo) VALUES (789456, 'Marcio Félix', '11933332222', 'COORDENADOR', true);

@@ -54,25 +54,11 @@ public class OrientadorService {
         Orientador orientador = orientadorRepository.findById(matricula)
                 .orElseThrow(() -> new ResourceNotFoundException(ORIENTADOR_NAO_ENCONTRADO));
 
-        if(orientadorDto.getNome() != null) {
-            orientador.setNome(orientadorDto.getNome());
-        }
-
-        if(orientadorDto.getTelefone() != null) {
-            orientador.setTelefone(orientadorDto.getTelefone());
-        }
-
-        if(orientadorDto.getAreaConhecimento() != null) {
-            orientador.setAreaConhecimento(orientadorDto.getAreaConhecimento());
-        }
-
-        if(orientadorDto.getTitulacao() != null) {
-            orientador.setTitulacao(Enum.valueOf(Titulacao.class, orientadorDto.getTitulacao()));
-        }
-
-        if(orientadorDto.getDisponibilidades() != null) {
-            orientador.setDisponibilidades(getListDisponibilidades(orientadorDto.getDisponibilidades()));
-        }
+        orientador.setNome(orientadorDto.getNome());
+        orientador.setTelefone(orientadorDto.getTelefone());
+        orientador.setAreaConhecimento(orientadorDto.getAreaConhecimento());
+        orientador.setTitulacao(Enum.valueOf(Titulacao.class, orientadorDto.getTitulacao()));
+        orientador.setDisponibilidades(getListDisponibilidades(orientadorDto.getDisponibilidades()));
 
         orientadorRepository.save(orientador);
         return orientadorMapper.toDto(orientador);
