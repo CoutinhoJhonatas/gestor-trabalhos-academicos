@@ -78,6 +78,7 @@ public class OrientadorService {
         return orientadorMapper.toDto(orientador);
     }
 
+    //TODO colocar um atributo boolean "ativo" no orientador para não ter que excluir de vez o registro do orientador na base.
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deletar(Long matricula) {
         if(!orientadorRepository.existsById(matricula)) {

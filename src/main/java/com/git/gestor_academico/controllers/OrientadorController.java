@@ -2,6 +2,7 @@ package com.git.gestor_academico.controllers;
 
 import com.git.gestor_academico.dtos.OrientadorDto;
 import com.git.gestor_academico.services.OrientadorService;
+import com.git.gestor_academico.swagger.OrientadorControllerSwagger;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/orientadores")
 @AllArgsConstructor
-public class OrientadorController {
+public class OrientadorController implements OrientadorControllerSwagger {
 
     private final OrientadorService orientadorService;
 

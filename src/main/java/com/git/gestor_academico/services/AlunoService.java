@@ -61,28 +61,19 @@ public class AlunoService {
         Aluno aluno = alunoRepository.findById(registro)
                 .orElseThrow(() -> new ResourceNotFoundException(ALUNO_NAO_ENCONTRADO));
 
-        if(alunoRequestDTO.getNome() != null) {
-            aluno.setNome(alunoRequestDTO.getNome());
-        }
+        aluno.setNome(alunoRequestDTO.getNome());
+        aluno.setTurma(alunoRequestDTO.getTurma());
+        aluno.setTelefone(alunoRequestDTO.getTelefone());
 
-        if(alunoRequestDTO.getTurma() != null) {
-            aluno.setTurma(alunoRequestDTO.getTurma());
-        }
-
-        if(alunoRequestDTO.getCursoId() != null) {
-            Curso curso = cursoRepository.findById(alunoRequestDTO.getCursoId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Curso com o id " + alunoRequestDTO.getCursoId() + " não encontrado"));
-            aluno.setCurso(curso);
-        }
-
-        if(alunoRequestDTO.getTelefone() != null) {
-            aluno.setTelefone(alunoRequestDTO.getTelefone());
-        }
+        Curso curso = cursoRepository.findById(alunoRequestDTO.getCursoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Curso com o id " + alunoRequestDTO.getCursoId() + " não encontrado"));
+        aluno.setCurso(curso);
 
         aluno = alunoRepository.save(aluno);
         return alunoMapper.toResponseDto(aluno);
     }
 
+    //TODO colocar um atributo boolean "ativo" no aluno para não ter que excluir de vez o registro do aluno na base.
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deletar(Long registro) {
         if(!alunoRepository.existsById(registro)) {

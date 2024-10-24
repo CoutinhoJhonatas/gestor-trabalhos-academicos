@@ -3,6 +3,7 @@ package com.git.gestor_academico.controllers;
 import com.git.gestor_academico.dtos.request.TccRequestDTO;
 import com.git.gestor_academico.dtos.response.TccResponseDTO;
 import com.git.gestor_academico.services.TccService;
+import com.git.gestor_academico.swagger.TccControllerSwagger;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/tccs")
 @AllArgsConstructor
-public class TccController {
+public class TccController implements TccControllerSwagger {
 
     private final TccService tccService;
 

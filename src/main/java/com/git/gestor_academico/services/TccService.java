@@ -1,11 +1,8 @@
 package com.git.gestor_academico.services;
 
-import com.git.gestor_academico.dtos.request.AlunoRequestDTO;
 import com.git.gestor_academico.dtos.request.TccRequestDTO;
 import com.git.gestor_academico.dtos.response.AlunoTccResponseDTO;
 import com.git.gestor_academico.dtos.response.TccResponseDTO;
-import com.git.gestor_academico.mappers.AlunoMapper;
-import com.git.gestor_academico.mappers.OrientadorMapper;
 import com.git.gestor_academico.mappers.TccMapper;
 import com.git.gestor_academico.models.Aluno;
 import com.git.gestor_academico.models.Orientador;
@@ -80,6 +77,7 @@ public class TccService {
         return tccMapper.toResponseDTO(tcc);
     }
 
+    //TODO colocar um atributo boolean "ativo" no tcc para não ter que excluir de vez o registro do tcc na base.
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deletar(Long id) {
         if(!tccRepository.existsById(id)) {

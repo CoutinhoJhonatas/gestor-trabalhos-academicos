@@ -3,6 +3,7 @@ package com.git.gestor_academico.controllers;
 import com.git.gestor_academico.dtos.request.AlunoRequestDTO;
 import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
 import com.git.gestor_academico.services.AlunoService;
+import com.git.gestor_academico.swagger.AlunoControllerSwagger;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/alunos")
 @AllArgsConstructor
-public class AlunoController {
+public class AlunoController implements AlunoControllerSwagger {
 
     private final AlunoService alunoService;
 
