@@ -5,9 +5,11 @@ import com.git.gestor_academico.dtos.response.AlunoTccResponseDTO;
 import com.git.gestor_academico.dtos.response.TccResponseDTO;
 import com.git.gestor_academico.mappers.TccMapper;
 import com.git.gestor_academico.models.Aluno;
+import com.git.gestor_academico.models.Coordenador;
 import com.git.gestor_academico.models.Orientador;
 import com.git.gestor_academico.models.Tcc;
 import com.git.gestor_academico.repositorys.AlunoRepository;
+import com.git.gestor_academico.repositorys.CoordenadorRepository;
 import com.git.gestor_academico.repositorys.OrientadorRepository;
 import com.git.gestor_academico.repositorys.TccRepository;
 import com.git.gestor_academico.services.exceptions.DatabaseException;
@@ -28,6 +30,7 @@ public class TccService {
     private final TccRepository tccRepository;
     private final OrientadorRepository orientadorRepository;
     private final AlunoRepository alunoRepository;
+    private final CoordenadorRepository coordenadorRepository;
     private final TccMapper tccMapper;
     private final AlunoService alunoService;
 
@@ -51,9 +54,11 @@ public class TccService {
     @Transactional
     public TccResponseDTO salvar(TccRequestDTO tccRequestDTO) {
         Orientador orientador = buscarOrientador(tccRequestDTO.getOrientadorMatricula());
+        Coordenador coordenador = buscarCoordenador(tccRequestDTO.getCoordenadorMatricula());
 
         Tcc tcc = tccMapper.toDomain(tccRequestDTO);
         tcc.setOrientador(orientador);
+        tcc.setCoordenador(coordenador);
         tcc = tccRepository.save(tcc);
 
         List<AlunoTccResponseDTO> alunoTccResponseDTOS = alunoService.vincularTccAluno(tcc, tccRequestDTO.getIntegrantesRA());
@@ -100,6 +105,11 @@ public class TccService {
     private Orientador buscarOrientador(Long matricula) {
         return orientadorRepository.findById(matricula)
                 .orElseThrow(() -> new ResourceNotFoundException("Orientador com a matricula " + matricula + " não encontrado"));
+    }
+
+    private Coordenador buscarCoordenador(Long matricula) {
+        return coordenadorRepository.findById(matricula)
+                .orElseThrow(() -> new ResourceNotFoundException("Coordenador com a matricula " + matricula + " não encontrado"));
     }
 
 }

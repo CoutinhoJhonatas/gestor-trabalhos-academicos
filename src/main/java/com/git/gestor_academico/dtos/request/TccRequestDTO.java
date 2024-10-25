@@ -27,6 +27,9 @@ public class TccRequestDTO {
     private Long orientadorMatricula;
 
     @NotNull(message = "Campo requerido")
+    private Long coordenadorMatricula;
+
+    @NotNull(message = "Campo requerido")
     private List<Long> integrantesRA;
 
 }

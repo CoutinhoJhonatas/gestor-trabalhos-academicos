@@ -34,6 +34,10 @@ public class Tcc {
     @JoinColumn(name = "orientador_id")
     private Orientador orientador;
 
+    @ManyToOne
+    @JoinColumn(name = "coordenador_id")
+    private Coordenador coordenador;
+
     @OneToMany(mappedBy = "tcc")
     private List<Aluno> integrantes;
 

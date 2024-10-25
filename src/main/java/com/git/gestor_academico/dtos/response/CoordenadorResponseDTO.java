@@ -14,7 +14,7 @@ public class CoordenadorResponseDTO {
     private Long matricula;
     private String nome;
     private String telefone;
-    //private String role;
+    private String role;
     private Boolean ativo;
 
 }

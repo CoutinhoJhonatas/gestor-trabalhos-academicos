@@ -2,11 +2,14 @@ package com.git.gestor_academico.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_coordenador")
@@ -22,5 +25,8 @@ public class Coordenador {
     private String telefone;
     private String role;
     private Boolean ativo;
+
+    @OneToMany(mappedBy = "coordenador")
+    private List<Tcc> tccs;
 
 }
