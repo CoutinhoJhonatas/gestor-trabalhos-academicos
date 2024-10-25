@@ -25,6 +25,7 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    private boolean ativo;
 
     @OneToMany(mappedBy = "curso")
     private List<Aluno> alunos;

@@ -1,5 +1,6 @@
-package com.git.gestor_academico.dtos.response;
+package com.git.gestor_academico.dtos.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CursoResponseDTO {
+public class CursoRequestDTO {
 
-    private Long id;
+    @NotBlank(message = "Campo requerido")
     private String nome;
-    private boolean ativo;
 
 }
