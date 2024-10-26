@@ -53,11 +53,11 @@ public class TccService {
 
     @Transactional
     public TccResponseDTO salvar(TccRequestDTO tccRequestDTO) {
-        Orientador orientador = buscarOrientador(tccRequestDTO.getOrientadorMatricula());
+        //Orientador orientador = buscarOrientador(tccRequestDTO.getOrientadorMatricula());
         Coordenador coordenador = buscarCoordenador(tccRequestDTO.getCoordenadorMatricula());
 
         Tcc tcc = tccMapper.toDomain(tccRequestDTO);
-        tcc.setOrientador(orientador);
+        //tcc.setOrientador(orientador);
         tcc.setCoordenador(coordenador);
         tcc = tccRepository.save(tcc);
 

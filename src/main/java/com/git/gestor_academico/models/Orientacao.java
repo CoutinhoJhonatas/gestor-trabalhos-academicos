@@ -1,13 +1,15 @@
 package com.git.gestor_academico.models;
 
-import jakarta.persistence.CascadeType;
+import com.git.gestor_academico.models.enums.OrientacaoStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -15,35 +17,31 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_tcc")
+@Table(name = "tb_orientacao")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Tcc {
+public class Orientacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String titulo;
-    private String linkDocs;
-    private String resumoProposta;
+
+    @Enumerated(EnumType.STRING)
+    private OrientacaoStatus status;
+
+    private String motivoRecusado;
 
     @ManyToOne
     @JoinColumn(name = "orientador_id")
     private Orientador orientador;
 
-    @ManyToOne
-    @JoinColumn(name = "coordenador_id")
-    private Coordenador coordenador;
-
-    @OneToMany(mappedBy = "tcc")
-    private List<Aluno> integrantes;
-
-    @OneToOne(mappedBy = "tcc", cascade = CascadeType.ALL)
-    private Orientacao orientacao;
+    @OneToOne
+    @MapsId
+    private Tcc tcc;
 
 }
