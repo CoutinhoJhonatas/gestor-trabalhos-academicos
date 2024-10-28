@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -16,5 +18,6 @@ public class OrientacaoResponseDTO {
     private String motivoRecusado;
     private Long orientadorMatricula;
     private Long tccId;
+    private List<CheckpointResponseDTO> checkpoints;
 
 }
