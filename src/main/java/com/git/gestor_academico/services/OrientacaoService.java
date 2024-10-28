@@ -34,6 +34,7 @@ public class OrientacaoService {
 
     @Transactional
     public OrientacaoResponseDTO salvar(OrientacaoRequestDTO orientacaoRequestDTO) {
+        //TODO fazer validacao para caso ja exista uma orientacao com o tccId enviado no dto (tccId = primaryKey da orientacao);
         Orientador orientador = buscarOrientador(orientacaoRequestDTO.getOrientadorMatricula());
         Tcc tcc = buscarTcc(orientacaoRequestDTO.getTccId());
 

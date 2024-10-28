@@ -75,7 +75,7 @@ public class TccService {
         tcc.setTitulo(tccRequestDTO.getTitulo());
         tcc.setLinkDocs(tccRequestDTO.getLinkDocs());
         tcc.setResumoProposta(tccRequestDTO.getResumoProposta());
-        tcc.setOrientador(buscarOrientador(tccRequestDTO.getOrientadorMatricula()));
+        //tcc.setOrientador(buscarOrientador(tccRequestDTO.getOrientadorMatricula()));
         tcc.setIntegrantes(getListAluno(tccRequestDTO.getIntegrantesRA()));
 
         tcc = tccRepository.save(tcc);

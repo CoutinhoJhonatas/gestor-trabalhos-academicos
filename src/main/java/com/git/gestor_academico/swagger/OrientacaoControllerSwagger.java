@@ -58,6 +58,10 @@ public interface OrientacaoControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
+    @ApiResponse(responseCode = "404", description = "Tcc/orientador com o ID/matrícula especificado não foi encontrado",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = CustomError.class))
+            })
     @ApiResponse(responseCode = "500", description = "Erro inesperado no servidor",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
