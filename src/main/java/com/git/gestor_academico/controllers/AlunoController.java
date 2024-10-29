@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +27,13 @@ public class AlunoController implements AlunoControllerSwagger {
 
     private final AlunoService alunoService;
 
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<AlunoResponseDTO>> getAll() {
         return ResponseEntity.ok(alunoService.listarTodos());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{registro}")
     public ResponseEntity<AlunoResponseDTO> procurarPorRegistro(@PathVariable Long registro) {
         return new ResponseEntity<>(alunoService.buscarPorRegistro(registro), HttpStatus.OK);

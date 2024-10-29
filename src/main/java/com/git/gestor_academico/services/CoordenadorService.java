@@ -39,7 +39,7 @@ public class CoordenadorService {
     @Transactional
     public CoordenadorResponseDTO salvar(CoordenadorRequestDTO coordenadorRequestDTO) {
         Coordenador coordenador = coordenadorMapper.toDomain(coordenadorRequestDTO);
-        coordenador.setRole("COORDENADOR");
+//        coordenador.setRole("COORDENADOR");
         coordenador.setAtivo(true);
         coordenador = coordenadorRepository.save(coordenador);
         return coordenadorMapper.toResponseDTO(coordenador);
