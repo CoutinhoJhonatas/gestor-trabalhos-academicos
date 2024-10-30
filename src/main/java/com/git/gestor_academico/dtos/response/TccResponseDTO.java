@@ -1,6 +1,5 @@
 package com.git.gestor_academico.dtos.response;
 
-import com.git.gestor_academico.dtos.OrientadorDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

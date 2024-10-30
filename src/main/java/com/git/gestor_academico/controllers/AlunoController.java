@@ -27,13 +27,13 @@ public class AlunoController implements AlunoControllerSwagger {
 
     private final AlunoService alunoService;
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_ORIENTADOR', 'ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<AlunoResponseDTO>> getAll() {
         return ResponseEntity.ok(alunoService.listarTodos());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_ORIENTADOR', 'ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @GetMapping("/{registro}")
     public ResponseEntity<AlunoResponseDTO> procurarPorRegistro(@PathVariable Long registro) {
         return new ResponseEntity<>(alunoService.buscarPorRegistro(registro), HttpStatus.OK);
@@ -44,12 +44,14 @@ public class AlunoController implements AlunoControllerSwagger {
         return new ResponseEntity<>(alunoService.salvar(aluno), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_ORIENTADOR', 'ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @PutMapping("/{registro}")
     public ResponseEntity<AlunoResponseDTO> atualizar(@PathVariable Long registro,
                                                       @Valid @RequestBody AlunoRequestDTO aluno) {
         return new ResponseEntity<>(alunoService.atualizar(registro, aluno), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @DeleteMapping("/{registro}")
     public ResponseEntity<Void> deletar(@PathVariable Long registro) {
         alunoService.deletar(registro);

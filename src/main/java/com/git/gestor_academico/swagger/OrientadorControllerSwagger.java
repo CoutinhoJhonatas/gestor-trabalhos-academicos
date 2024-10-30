@@ -1,8 +1,8 @@
 package com.git.gestor_academico.swagger;
 
-import com.git.gestor_academico.dtos.OrientadorDto;
+import com.git.gestor_academico.dtos.request.OrientadorRequestDTO;
+import com.git.gestor_academico.dtos.response.OrientadorResponseDTO;
 import com.git.gestor_academico.dtos.exceptions.CustomError;
-import com.git.gestor_academico.dtos.response.AlunoResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -20,7 +20,7 @@ public interface OrientadorControllerSwagger {
     @Operation(summary = "Buscar todos os orientadores")
     @ApiResponse(responseCode = "200", description = "Orientadores retornados com sucesso",
             content = {@Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = OrientadorDto.class)))
+                    array = @ArraySchema(schema = @Schema(implementation = OrientadorResponseDTO.class)))
             })
     @ApiResponse(responseCode = "401", description = "Usuário não autenticado",
             content = {@Content(mediaType = "application/json",
@@ -34,12 +34,12 @@ public interface OrientadorControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<List<OrientadorDto>> getAll();
+    ResponseEntity<List<OrientadorResponseDTO>> getAll();
 
     @Operation(summary = "Buscar orientador pela matrícula")
     @ApiResponse(responseCode = "200", description = "Orientador retornado com sucesso",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = OrientadorDto.class))
+                    schema = @Schema(implementation = OrientadorResponseDTO.class))
             })
     @ApiResponse(responseCode = "401", description = "Usuário não autenticado",
             content = {@Content(mediaType = "application/json",
@@ -57,12 +57,12 @@ public interface OrientadorControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<OrientadorDto> procurarPorMatricula(@Parameter(description = "Matrícula do orientador") Long matricula);
+    ResponseEntity<OrientadorResponseDTO> procurarPorMatricula(@Parameter(description = "Matrícula do orientador") Long matricula);
 
     @Operation(summary = "Salvar orientador")
     @ApiResponse(responseCode = "201", description = "Orientador salvo com sucesso",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = OrientadorDto.class))
+                    schema = @Schema(implementation = OrientadorResponseDTO.class))
             })
     @ApiResponse(responseCode = "400", description = "Parâmetros inválidos",
             content = {@Content(mediaType = "application/json",
@@ -80,12 +80,12 @@ public interface OrientadorControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<OrientadorDto> save(@Parameter(description = "Dados do orientador") OrientadorDto orientador);
+    ResponseEntity<OrientadorResponseDTO> save(@Parameter(description = "Dados do orientador") OrientadorRequestDTO orientador);
 
     @Operation(summary = "Atualizar orientador")
     @ApiResponse(responseCode = "200", description = "Orientador atualizado com sucesso",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = OrientadorDto.class))
+                    schema = @Schema(implementation = OrientadorResponseDTO.class))
             })
     @ApiResponse(responseCode = "400", description = "Parâmetros inválidos",
             content = {@Content(mediaType = "application/json",
@@ -107,8 +107,8 @@ public interface OrientadorControllerSwagger {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = CustomError.class))
             })
-    ResponseEntity<OrientadorDto> atualizar(@Parameter(description = "Matrícula do orientador") Long matricula,
-                                            @Parameter(description = "Dados atualizados do orientador") OrientadorDto orientador);
+    ResponseEntity<OrientadorResponseDTO> atualizar(@Parameter(description = "Matrícula do orientador") Long matricula,
+                                                    @Parameter(description = "Dados atualizados do orientador") OrientadorRequestDTO orientador);
 
     @Operation(summary = "Deletar orientador")
     @ApiResponse(responseCode = "204", description = "Orientador deletado com sucesso")

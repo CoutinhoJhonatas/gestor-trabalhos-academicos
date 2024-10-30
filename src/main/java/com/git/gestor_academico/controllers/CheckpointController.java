@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class CheckpointController implements CheckpointControllerSwagger {
 
     private final CheckpointService checkpointService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_ORIENTADOR', 'ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<CheckpointResponseDTO> save(@Valid @RequestBody CheckpointRequestDTO checkpoint) {
         return new ResponseEntity<>(checkpointService.salvar(checkpoint), HttpStatus.CREATED);

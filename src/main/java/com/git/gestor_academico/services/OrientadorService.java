@@ -1,6 +1,7 @@
 package com.git.gestor_academico.services;
 
-import com.git.gestor_academico.dtos.OrientadorDto;
+import com.git.gestor_academico.dtos.response.OrientadorResponseDTO;
+import com.git.gestor_academico.dtos.request.OrientadorRequestDTO;
 import com.git.gestor_academico.mappers.OrientadorMapper;
 import com.git.gestor_academico.models.Orientador;
 import com.git.gestor_academico.models.enums.Disponibilidades;
@@ -25,40 +26,48 @@ public class OrientadorService {
 
     private final OrientadorRepository orientadorRepository;
     private final OrientadorMapper orientadorMapper;
+    private final UserService userService;
 
     private static final String ORIENTADOR_NAO_ENCONTRADO = "Orientador não encontrado";
 
     @Transactional(readOnly = true)
-    public List<OrientadorDto> listarTodos() {
+    public List<OrientadorResponseDTO> listarTodos() {
         List<Orientador> orientadores = orientadorRepository.findAll();
-        List<OrientadorDto> orientadoresDtos = new ArrayList<>();
+        List<OrientadorResponseDTO> orientadoresDtos = new ArrayList<>();
         orientadores.forEach(orientador -> orientadoresDtos.add(orientadorMapper.toDto(orientador)));
         return orientadoresDtos;
     }
 
     @Transactional(readOnly = true)
-    public OrientadorDto buscarPorMatricula(Long matricula) {
+    public OrientadorResponseDTO buscarPorMatricula(Long matricula) {
         Orientador orientador = orientadorRepository.findById(matricula)
                 .orElseThrow(() -> new ResourceNotFoundException(ORIENTADOR_NAO_ENCONTRADO));
         return orientadorMapper.toDto(orientador);
     }
 
     @Transactional
-    public OrientadorDto salvar(OrientadorDto orientadorDto) {
-        Orientador orientador = orientadorRepository.save(orientadorMapper.toDomain(orientadorDto));
+    public OrientadorResponseDTO salvar(OrientadorRequestDTO orientadorRequestDTO) {
+        if(!userService.saveUser(
+                orientadorRequestDTO.getMatricula().toString(),
+                orientadorRequestDTO.getSenha(),
+                "ROLE_ORIENTADOR")) {
+            throw new RuntimeException("Erro ao salvar usuário");
+        }
+
+        Orientador orientador = orientadorRepository.save(orientadorMapper.toDomain(orientadorRequestDTO));
         return orientadorMapper.toDto(orientador);
     }
 
     @Transactional
-    public OrientadorDto atualizar(Long matricula, OrientadorDto orientadorDto) {
+    public OrientadorResponseDTO atualizar(Long matricula, OrientadorRequestDTO orientadorResponseDTO) {
         Orientador orientador = orientadorRepository.findById(matricula)
                 .orElseThrow(() -> new ResourceNotFoundException(ORIENTADOR_NAO_ENCONTRADO));
 
-        orientador.setNome(orientadorDto.getNome());
-        orientador.setTelefone(orientadorDto.getTelefone());
-        orientador.setAreaConhecimento(orientadorDto.getAreaConhecimento());
-        orientador.setTitulacao(Enum.valueOf(Titulacao.class, orientadorDto.getTitulacao()));
-        orientador.setDisponibilidades(getListDisponibilidades(orientadorDto.getDisponibilidades()));
+        orientador.setNome(orientadorResponseDTO.getNome());
+        orientador.setTelefone(orientadorResponseDTO.getTelefone());
+        orientador.setAreaConhecimento(orientadorResponseDTO.getAreaConhecimento());
+        orientador.setTitulacao(Enum.valueOf(Titulacao.class, orientadorResponseDTO.getTitulacao()));
+        orientador.setDisponibilidades(getListDisponibilidades(orientadorResponseDTO.getDisponibilidades()));
 
         orientadorRepository.save(orientador);
         return orientadorMapper.toDto(orientador);

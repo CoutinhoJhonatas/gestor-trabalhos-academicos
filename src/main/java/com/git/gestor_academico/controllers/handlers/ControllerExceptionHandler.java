@@ -5,6 +5,7 @@ import com.git.gestor_academico.dtos.exceptions.ValidationError;
 import com.git.gestor_academico.services.exceptions.DatabaseException;
 import com.git.gestor_academico.services.exceptions.ForbiddenException;
 import com.git.gestor_academico.services.exceptions.ResourceNotFoundException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +48,12 @@ public class ControllerExceptionHandler {
         CustomError error = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
+
+    /*@ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<CustomError> tokenExpired(ExpiredJwtException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        CustomError error = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }*/
 
 }

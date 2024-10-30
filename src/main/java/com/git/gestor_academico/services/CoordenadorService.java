@@ -19,6 +19,7 @@ public class CoordenadorService {
 
     private final CoordenadorRepository coordenadorRepository;
     private final CoordenadorMapper coordenadorMapper;
+    private final UserService userService;
 
     private static final String COORDENADOR_NAO_ENCONTRADO = "Coordenador com o ID %d não foi encontrado";
 
@@ -38,8 +39,14 @@ public class CoordenadorService {
 
     @Transactional
     public CoordenadorResponseDTO salvar(CoordenadorRequestDTO coordenadorRequestDTO) {
+        if(!userService.saveUser(
+                coordenadorRequestDTO.getMatricula().toString(),
+                coordenadorRequestDTO.getSenha(),
+                "ROLE_COORDENADOR")) {
+            throw new RuntimeException("Erro ao salvar usuário");
+        }
+
         Coordenador coordenador = coordenadorMapper.toDomain(coordenadorRequestDTO);
-//        coordenador.setRole("COORDENADOR");
         coordenador.setAtivo(true);
         coordenador = coordenadorRepository.save(coordenador);
         return coordenadorMapper.toResponseDTO(coordenador);

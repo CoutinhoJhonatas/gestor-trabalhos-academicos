@@ -22,4 +22,7 @@ public class CoordenadorRequestDTO {
     @NotBlank(message = "Campo requerido")
     private String telefone;
 
+    @NotNull(message = "Campo requerido")
+    private String senha;
+
 }

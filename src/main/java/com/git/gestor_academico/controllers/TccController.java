@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,27 +27,32 @@ public class TccController implements TccControllerSwagger {
 
     private final TccService tccService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_ORIENTADOR', 'ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<TccResponseDTO>> getAll() {
         return ResponseEntity.ok(tccService.listarTodos());
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_ORIENTADOR', 'ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<TccResponseDTO> procurarPorRegistro(@PathVariable Long id) {
         return new ResponseEntity<>(tccService.buscarPorId(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_ORIENTADOR', 'ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<TccResponseDTO> save(@Valid @RequestBody TccRequestDTO tcc) {
         return new ResponseEntity<>(tccService.salvar(tcc), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ALUNO', 'ROLE_ORIENTADOR', 'ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TccResponseDTO> atualizar(@PathVariable Long id,
                                                     @Valid @RequestBody TccRequestDTO tcc) {
         return new ResponseEntity<>(tccService.atualizar(id, tcc), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_COORDENADOR', 'ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         tccService.deletar(id);

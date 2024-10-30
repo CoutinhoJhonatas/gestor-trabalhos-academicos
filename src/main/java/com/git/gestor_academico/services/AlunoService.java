@@ -27,6 +27,7 @@ public class AlunoService {
     private final AlunoRepository alunoRepository;
     private final CursoRepository cursoRepository;
     private final AlunoMapper alunoMapper;
+    private final UserService userService;
 
     private static final String ALUNO_NAO_ENCONTRADO = "Aluno não encontrado";
 
@@ -47,11 +48,14 @@ public class AlunoService {
 
     @Transactional
     public AlunoResponseDTO salvar(AlunoRequestDTO alunoRequestDTO) {
+        if(!userService.saveUser(alunoRequestDTO.getRegistroAluno().toString(), alunoRequestDTO.getSenha(), "ROLE_ALUNO")) {
+            throw new RuntimeException("Erro ao salvar usuário");
+        }
+
         Curso curso = cursoRepository.findById(alunoRequestDTO.getCursoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Curso com o id " + alunoRequestDTO.getCursoId() + " não encontrado"));
         Aluno aluno = alunoMapper.toDomain(alunoRequestDTO);
         aluno.setCurso(curso);
-        //aluno.setRole("ALUNO");
         aluno = alunoRepository.save(aluno);
         return alunoMapper.toResponseDto(aluno);
     }

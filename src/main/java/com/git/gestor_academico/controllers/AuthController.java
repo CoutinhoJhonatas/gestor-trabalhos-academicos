@@ -3,6 +3,8 @@ package com.git.gestor_academico.controllers;
 import com.git.gestor_academico.dtos.request.AuthenticationRequest;
 import com.git.gestor_academico.dtos.response.AuthenticationResponse;
 import com.git.gestor_academico.security.jwt.JwtUtil;
+import com.git.gestor_academico.services.exceptions.ForbiddenException;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/v1/auth")
+@AllArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthController.class.getName());
 
@@ -38,7 +36,7 @@ public class AuthController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException badCredentialsException) {
             LOG.error("Incorrect username or password");
-            throw badCredentialsException;
+            throw new ForbiddenException("Usuário ou senha incorreto");
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
