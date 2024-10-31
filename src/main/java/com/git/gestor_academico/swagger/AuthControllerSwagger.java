@@ -19,7 +19,7 @@ public interface AuthControllerSwagger {
     @Operation(summary = "Autenticar")
     @ApiResponse(responseCode = "200", description = "Autenticado com sucesso",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = AuthenticationRequest.class))
+                    schema = @Schema(implementation = AuthenticationResponse.class))
             })
     @ApiResponse(responseCode = "400", description = "Parâmetros inválidos",
             content = {@Content(mediaType = "application/json",
