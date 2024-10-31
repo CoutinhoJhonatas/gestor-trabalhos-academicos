@@ -4,10 +4,10 @@ import com.git.gestor_academico.dtos.request.AuthenticationRequest;
 import com.git.gestor_academico.dtos.response.AuthenticationResponse;
 import com.git.gestor_academico.security.jwt.JwtUtil;
 import com.git.gestor_academico.services.exceptions.ForbiddenException;
+import com.git.gestor_academico.swagger.AuthControllerSwagger;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/auth")
 @AllArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerSwagger {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;

@@ -5,6 +5,7 @@ import com.git.gestor_academico.dtos.exceptions.ValidationError;
 import com.git.gestor_academico.services.exceptions.DatabaseException;
 import com.git.gestor_academico.services.exceptions.ForbiddenException;
 import com.git.gestor_academico.services.exceptions.ResourceNotFoundException;
+import com.git.gestor_academico.services.exceptions.UserAlreadyExistException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -55,5 +56,12 @@ public class ControllerExceptionHandler {
         CustomError error = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }*/
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<CustomError> tokenExpired(UserAlreadyExistException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomError error = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
 
 }
