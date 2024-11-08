@@ -5,6 +5,17 @@ spring:
         open-in-view: false
     profiles:
         active: test
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: gestoracademico28@gmail.com
+        password: bwiy eajr oczh boqz
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
 
 # JWT configuration
 jwt:
