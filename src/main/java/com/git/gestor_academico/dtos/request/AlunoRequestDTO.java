@@ -31,4 +31,7 @@ public class AlunoRequestDTO {
     @NotNull(message = "Campo requerido")
     private String senha;
 
+    @NotNull(message = "Campo requerido")
+    private String email;
+
 }

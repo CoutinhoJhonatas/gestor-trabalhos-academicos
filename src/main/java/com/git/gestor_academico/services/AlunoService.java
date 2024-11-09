@@ -68,6 +68,7 @@ public class AlunoService {
         aluno.setNome(alunoRequestDTO.getNome());
         aluno.setTurma(alunoRequestDTO.getTurma());
         aluno.setTelefone(alunoRequestDTO.getTelefone());
+        aluno.setEmail(alunoRequestDTO.getEmail());
 
         Curso curso = cursoRepository.findById(alunoRequestDTO.getCursoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Curso com o id " + alunoRequestDTO.getCursoId() + " não encontrado"));

@@ -59,15 +59,16 @@ public class OrientadorService {
     }
 
     @Transactional
-    public OrientadorResponseDTO atualizar(Long matricula, OrientadorRequestDTO orientadorResponseDTO) {
+    public OrientadorResponseDTO atualizar(Long matricula, OrientadorRequestDTO orientadorRequestDTO) {
         Orientador orientador = orientadorRepository.findById(matricula)
                 .orElseThrow(() -> new ResourceNotFoundException(ORIENTADOR_NAO_ENCONTRADO));
 
-        orientador.setNome(orientadorResponseDTO.getNome());
-        orientador.setTelefone(orientadorResponseDTO.getTelefone());
-        orientador.setAreaConhecimento(orientadorResponseDTO.getAreaConhecimento());
-        orientador.setTitulacao(Enum.valueOf(Titulacao.class, orientadorResponseDTO.getTitulacao()));
-        orientador.setDisponibilidades(getListDisponibilidades(orientadorResponseDTO.getDisponibilidades()));
+        orientador.setNome(orientadorRequestDTO.getNome());
+        orientador.setTelefone(orientadorRequestDTO.getTelefone());
+        orientador.setAreaConhecimento(orientadorRequestDTO.getAreaConhecimento());
+        orientador.setEmail(orientadorRequestDTO.getEmail());
+        orientador.setTitulacao(Enum.valueOf(Titulacao.class, orientadorRequestDTO.getTitulacao()));
+        orientador.setDisponibilidades(getListDisponibilidades(orientadorRequestDTO.getDisponibilidades()));
 
         orientadorRepository.save(orientador);
         return orientadorMapper.toDto(orientador);

@@ -23,7 +23,7 @@ public class TccRequestDTO {
     @NotBlank(message = "Campo requerido")
     private String resumoProposta;
 
-    @NotNull(message = "Campo requerido")
+    //@NotNull(message = "Campo requerido")
     private Long orientadorMatricula;
 
     @NotNull(message = "Campo requerido")

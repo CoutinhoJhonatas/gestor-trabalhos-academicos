@@ -21,7 +21,7 @@ public class Aluno {
     private String nome;
     private String turma;
     private String telefone;
-    //private String role;
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "curso_id")

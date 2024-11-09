@@ -10,12 +10,12 @@ INSERT INTO tb_role_details(role_name) VALUES ('ROLE_ORIENTADOR');
 INSERT INTO tb_role_details(role_name) VALUES ('ROLE_COORDENADOR');
 INSERT INTO tb_role_details(role_name) VALUES ('ROLE_ADMIN');
 
-INSERT INTO tb_aluno(registro_aluno, nome, turma, telefone, curso_id) VALUES (511772020, 'Jhonatas Coutinho de Macedo', 'N2SICON', '11959669347', 1);
-INSERT INTO tb_aluno(registro_aluno, nome, turma, telefone, curso_id) VALUES (500432020, 'Franklin Almeida', 'N2SICON', '11999996666', 3);
-INSERT INTO tb_aluno(registro_aluno, nome, turma, telefone, curso_id) VALUES (520332022, 'Harry Potter', 'N2SICON', '11922223333', 2);
+INSERT INTO tb_aluno(registro_aluno, nome, turma, telefone, email, curso_id) VALUES (511772020, 'Jhonatas Coutinho de Macedo', 'N2SICON', '11959669347', '511772020@eniac.edu.br', 1);
+INSERT INTO tb_aluno(registro_aluno, nome, turma, telefone, email, curso_id) VALUES (500432020, 'Franklin Almeida', 'N2SICON', '11999996666', 'frank_teste@gmail.com', 3);
+INSERT INTO tb_aluno(registro_aluno, nome, turma, telefone, email, curso_id) VALUES (520332022, 'Harry Potter', 'N2SICON', '11922223333', 'harry_teste@gmail.com', 2);
 
-INSERT INTO tb_orientador(matricula, nome, telefone, area_conhecimento, titulacao) VALUES (23456789, 'Thiago Assumpção', '11901010202', 'Engenharia', 'DOUTORADO');
-INSERT INTO tb_orientador(matricula, nome, telefone, area_conhecimento, titulacao) VALUES (12345699, 'Alvo Dumbledore', '11988885555', 'Arte das Trevas', 'DOUTORADO');
+INSERT INTO tb_orientador(matricula, nome, telefone, email, area_conhecimento, titulacao) VALUES (23456789, 'Thiago Assumpção', '11901010202', '511772020@eniac.edu.br', 'Engenharia', 'DOUTORADO');
+INSERT INTO tb_orientador(matricula, nome, telefone, email, area_conhecimento, titulacao) VALUES (12345699, 'Alvo Dumbledore', '11988885555', 'alvo_teste@gmail.com', 'Arte das Trevas', 'DOUTORADO');
 
 INSERT INTO tb_orientador_disponibilidades(orientador_matricula, disponibilidades) VALUES (23456789, 'ORIENTADOR');
 INSERT INTO tb_orientador_disponibilidades(orientador_matricula, disponibilidades) VALUES (12345699, 'ORIENTADOR');

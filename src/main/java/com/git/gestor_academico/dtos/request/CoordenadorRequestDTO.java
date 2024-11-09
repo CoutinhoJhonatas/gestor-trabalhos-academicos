@@ -25,4 +25,7 @@ public class CoordenadorRequestDTO {
     @NotNull(message = "Campo requerido")
     private String senha;
 
+    @NotNull(message = "Campo requerido")
+    private String email;
+
 }

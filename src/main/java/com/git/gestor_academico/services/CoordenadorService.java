@@ -57,6 +57,7 @@ public class CoordenadorService {
         Coordenador coordenador = findById(matricula);
         coordenador.setNome(coordenadorRequestDTO.getNome());
         coordenador.setTelefone(coordenadorRequestDTO.getTelefone());
+        coordenador.setEmail(coordenadorRequestDTO.getEmail());
         coordenador = coordenadorRepository.save(coordenador);
         return coordenadorMapper.toResponseDTO(coordenador);
     }

@@ -31,6 +31,7 @@ public class Orientador {
     private String nome;
     private String telefone;
     private String areaConhecimento;
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Titulacao titulacao;

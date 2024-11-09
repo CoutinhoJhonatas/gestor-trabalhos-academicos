@@ -34,6 +34,9 @@ public class OrientadorRequestDTO {
     @NotNull(message = "Campo requerido")
     private String senha;
 
+    @NotNull(message = "Campo requerido")
+    private String email;
+
     @NotEmpty(message = "Deve ter pelo menos uma categoria")
     private Set<String> disponibilidades;
 

@@ -24,6 +24,7 @@ public class Coordenador {
     private String nome;
     private String telefone;
     private Boolean ativo;
+    private String email;
 
     @OneToMany(mappedBy = "coordenador")
     private List<Tcc> tccs;

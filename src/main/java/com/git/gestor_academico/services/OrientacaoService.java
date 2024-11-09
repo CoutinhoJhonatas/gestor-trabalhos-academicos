@@ -4,7 +4,7 @@ import com.git.gestor_academico.dtos.request.OrientacaoRequestDTO;
 import com.git.gestor_academico.dtos.response.CheckpointResponseDTO;
 import com.git.gestor_academico.dtos.response.OrientacaoResponseDTO;
 import com.git.gestor_academico.mappers.OrientacaoMapper;
-import com.git.gestor_academico.models.Checkpoint;
+import com.git.gestor_academico.models.Aluno;
 import com.git.gestor_academico.models.Orientacao;
 import com.git.gestor_academico.models.Orientador;
 import com.git.gestor_academico.models.Tcc;
@@ -32,6 +32,7 @@ public class OrientacaoService {
     private final OrientadorRepository orientadorRepository;
     private final CheckpointRepository checkpointRepository;
     private final OrientacaoMapper orientacaoMapper;
+    private final EmailService emailService;
 
     private static final String ORIENTACAO_NAO_ENCONTRADO = "Coordenador com o ID %d não foi encontrado";
 
@@ -54,7 +55,6 @@ public class OrientacaoService {
         });
 
         responseDTO.setCheckpoints(checkpoints);
-
         return responseDTO;
     }
 
@@ -69,6 +69,11 @@ public class OrientacaoService {
         orientacao.setTcc(tcc);
 
         orientacao = orientacaoRepository.save(orientacao);
+
+        emailService.sendEmail(orientador.getEmail(),
+                "Solictação de orientação para o TCC",
+                "Houve uma solicitação para orientar o trabalho com o título: " + tcc.getTitulo().toUpperCase());
+
         return orientacaoMapper.toResponseDTO(orientacao);
     }
 
@@ -83,6 +88,7 @@ public class OrientacaoService {
         orientacao.setTcc(buscarTcc(orientacaoRequestDTO.getTccId()));
 
         orientacao = orientacaoRepository.save(orientacao);
+        enviarEmailAlunosOrientacaoAtualizada(orientacao.getTcc().getIntegrantes());
         return orientacaoMapper.toResponseDTO(orientacao);
     }
 
@@ -99,6 +105,13 @@ public class OrientacaoService {
     private Tcc buscarTcc(Long id) {
         return tccRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("TCC com o ID " + id + " não encontrado"));
+    }
+
+    private void enviarEmailAlunosOrientacaoAtualizada(List<Aluno> alunos) {
+        alunos.forEach(aluno -> emailService.sendEmail(
+                aluno.getEmail(),
+                "Alteração no status da orientação",
+                "Houve uma alteração no status da orientação."));
     }
 
 }
